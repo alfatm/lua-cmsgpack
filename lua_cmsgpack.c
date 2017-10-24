@@ -563,7 +563,11 @@ void mp_decode_to_lua_hash(lua_State *L, mp_cur *c, size_t len) {
         if (c->err) return;
         mp_decode_to_lua_type(L,c); /* value */
         if (c->err) return;
-        lua_settable(L,-3);
+        if (lua_type(L, -2) == LUA_TNIL) {
+            lua_pop(L, 2);
+        } else {
+            lua_settable(L,-3);
+        }
     }
 }
 
